@@ -30,11 +30,12 @@ app.get("/users", function(req, res){
 	})
 
 app.get("/users/:id", function(req, res){
-	models.users.findById(req.params.id).then(users => {
-		res.render("users", {users: users})
-		}).then(()=>{
-	post_models.posts.findById(models.users.id).then(posts => {
-		res.render("posts", {posts: posts})
+	models.users.findById(req.params.id).then(user => {
+	post_models.posts.findAll({where: {user_id: req.params.id}}).then(posts => {
+		res.render("users", {
+			user: user,
+			posts: posts
+			})
 		})
 	})
 })
